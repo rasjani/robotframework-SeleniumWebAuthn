@@ -1,6 +1,7 @@
 from SeleniumLibrary.base import LibraryComponent, keyword
 from SeleniumLibrary import SeleniumLibrary
-from selenium.webdriver.common.virtual_authenticator import Credential, VirtualAuthenticatorOptions
+#from selenium.webdriver.common.virtual_authenticator import Credential
+from selenium.webdriver.common.virtual_authenticator import VirtualAuthenticatorOptions
 
 from pathlib import Path
 import sys
@@ -10,7 +11,6 @@ import json
 class SeleniumWebAuthn(LibraryComponent):
     def __init__(self: "SeleniumWebAuthn", ctx: SeleniumLibrary, config_file: str | None = None)-> None:
         LibraryComponent.__init__(self, ctx)
-        self.config_file = config_file
         self.config = None
         self.virtauthopts = None
 
@@ -39,7 +39,8 @@ class SeleniumWebAuthn(LibraryComponent):
 
         try:
             self.config = json.loads(self.config_file.read_text(encoding="utf-8"))
-            self.accounts = self.config.keys()
+            if self.config:
+                self.accounts = self.config.keys()
         except Exception:
             print(f"Unable to load config from {str(self.config_file)}", file=sys.stderr)
 
