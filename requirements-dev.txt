@@ -1,0 +1,8 @@
+wheel
+twine
+python-language-server[all]
+ruff
+mypy
+invoke
+robotframework-lint
+-r requirements.txt
