@@ -7,8 +7,14 @@ Resource        resources.robot
 Library         Collections
 
 *** Variables ***
-${URL}          https://www.webauthn.io
+${URL}          https://webauthn.io/
 ${BROWSER}      headlesschrome
+
+*** Test Cases ***
+Happy Path
+  Log To Console    Before Keyword
+  Initial Webauthn Keyword
+  Log To Console    After
 
 *** Keywords ***
 Generic Suite Setup
@@ -17,6 +23,3 @@ Generic Suite Setup
 Generic Suite Teardown
   Teardown Web Environment
 
-
-*** Test Cases ***
-  Log To Console    Hello World

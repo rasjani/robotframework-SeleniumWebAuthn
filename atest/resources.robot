@@ -2,10 +2,6 @@
 Documentation   Helper keywords and variables
 Library         Process
 
-*** Variables ***
-${FF}           Firefox
-${GC}           Chrome
-
 *** Keywords ***
 Teardown Web Environment
   [Documentation]  Closes all browsers

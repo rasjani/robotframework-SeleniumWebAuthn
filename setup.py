@@ -38,8 +38,7 @@ Framework :: Robot Framework :: Library
 
 setup(
     name="robotframework-%s" % LIBRARY_NAME.lower(),
-    version=versioneer.get_version(),
-    cmdclass=versioneer.get_cmdclass(),
+    version="0.0.1",
     description="SeleniumWebauthn plugin that provides Webauthn support and keywords for SeleniumLibrary.",
     long_description=long_description,
     long_description_content_type="text/markdown",

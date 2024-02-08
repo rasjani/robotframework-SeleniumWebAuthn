@@ -10,6 +10,7 @@ assert Path.cwd() == Path(__file__).parent
 @task
 def check(ctx):
     """Runs ruff on whole project"""
+    ctx.run("mypy --config mypy.ini src/*")
     ctx.run("ruff check .")
 
 
@@ -43,6 +44,7 @@ def clean(ctx):
         "dist/",
         "output/",
         "src/*.egg-info/",
+        ".ruff_cache/"
         "output.xml",
         ".coveragedb",
         "*.html",
