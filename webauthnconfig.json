@@ -1,0 +1,11 @@
+{
+  "testaccount": {
+    "transport": "USB",
+    "protocol": "U2F",
+    "has_resident_key": true,
+    "has_user_verification": true
+    "is_user_consenting": true,
+    "is_user_verified": true
+    "autoAdd": true,
+  }
+}
