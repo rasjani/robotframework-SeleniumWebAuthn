@@ -18,18 +18,26 @@ class SeleniumWebAuthn(LibraryComponent):
         if config_file:
             self.config_file = Path(config_file)
         else:
-            self.config_file = Path("webauthnconfig.json")
+            self.config_file = Path(".").resolve() / Path("webauthnconfig.json")
 
         self.load_webauthn_configs(self.config_file)
 
         if self.config:
-            for account in self.accounts:
-                if getattr(self.accounts, "autoAdd", False):
+            for account_name in self.config.keys():
+                account = self.config[account_name]
+                if "autoAdd" in account and account["autoAdd"]:
                     if not self.virtauthopts:
-                        self.virtauthopts = VirtualAuthenticatorOptions()
+                        self.virtauthopts = VirtualAuthenticatorOptions(VirtualAuthenticatorOptions.Protocol.CTAP2,
+                        VirtualAuthenticatorOptions.Transport.USB,
+                        True,
+                        True,
+                        True,
+                        True)
 
-            pass
-
+    @keyword
+    def add_authenticator(self) -> None:
+        if self.virtauthopts:
+            self.ctx.driver.add_virtual_authenticator(self.virtauthopts)
 
     @keyword
     def load_webauthn_configs(self, config_file: str | None = None) -> None:
@@ -37,12 +45,13 @@ class SeleniumWebAuthn(LibraryComponent):
         if config_file:
             self.config_file = Path(config_file)
 
+        print(f"Loading {self.config_file}", file=sys.stderr)
         try:
             self.config = json.loads(self.config_file.read_text(encoding="utf-8"))
             if self.config:
                 self.accounts = self.config.keys()
-        except Exception:
-            print(f"Unable to load config from {str(self.config_file)}", file=sys.stderr)
+        except Exception as e:
+            print(f"Unable to load config from {str(self.config_file)}: {e}", file=sys.stderr)
 
 
 

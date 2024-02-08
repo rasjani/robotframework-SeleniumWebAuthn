@@ -8,13 +8,20 @@ Library         Collections
 
 *** Variables ***
 ${URL}          https://webauthn.io/
-${BROWSER}      headlesschrome
+#${BROWSER}      headlesschrome
+${BROWSER}     chrome
 
 *** Test Cases ***
-Happy Path
-  Log To Console    Before Keyword
+Plugin Loads
   Initial Webauthn Keyword
-  Log To Console    After
+
+User inititates registration
+  Go To           ${URL}
+  Add Authenticator
+  Input Text      //*[@id="input-email"]    test_user_007
+  Sleep           1 second
+  Click Element   //*[@id="register-button"]
+  Sleep           1 second
 
 *** Keywords ***
 Generic Suite Setup
