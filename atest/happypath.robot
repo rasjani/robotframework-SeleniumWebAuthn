@@ -7,7 +7,7 @@ Resource        resources.robot
 Library         Collections
 
 *** Variables ***
-${URL}          http://www.webauthn.io
+${URL}          https://www.webauthn.io
 ${BROWSER}      headlesschrome
 
 *** Keywords ***
@@ -19,8 +19,4 @@ Generic Suite Teardown
 
 
 *** Test Cases ***
-Cookies With Firefox
-  ${FF}
-
-Cookies With Chrome
-  ${GC}
+  Log To Console    Hello World

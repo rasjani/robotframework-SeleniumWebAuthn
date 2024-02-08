@@ -33,7 +33,7 @@ def black(ctx):
 @task
 def test(ctx):
     """Runs robot acceptance tests"""
-    ctx.run(f"python -m robot --pythonpath src --loglevel TRACE:TRACE {extras} atest{os.path.sep}")
+    ctx.run(f"python -m robot --pythonpath src --loglevel TRACE:TRACE atest{os.path.sep}")
 
 
 @task

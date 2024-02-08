@@ -1,7 +1,6 @@
 *** Settings ***
 Documentation   Helper keywords and variables
 Library         Process
-Library         Helpers
 
 *** Variables ***
 ${FF}           Firefox
