@@ -7,6 +7,10 @@ import shutil
 
 assert Path.cwd() == Path(__file__).parent
 
+
+@task
+def black(ctx):
+    ctx.run("black -l130 -tpy310 src/* tasks.py")
 @task
 def check(ctx):
     """Runs ruff on whole project"""
@@ -44,7 +48,7 @@ def clean(ctx):
         "dist/",
         "output/",
         "src/*.egg-info/",
-        ".ruff_cache/"
+        ".ruff_cache/",
         "output.xml",
         ".coveragedb",
         "*.html",

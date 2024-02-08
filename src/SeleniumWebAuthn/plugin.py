@@ -1,6 +1,7 @@
 from SeleniumLibrary.base import LibraryComponent, keyword
 from SeleniumLibrary import SeleniumLibrary
-#from selenium.webdriver.common.virtual_authenticator import Credential
+
+# from selenium.webdriver.common.virtual_authenticator import Credential
 from selenium.webdriver.common.virtual_authenticator import VirtualAuthenticatorOptions
 
 from pathlib import Path
@@ -9,11 +10,10 @@ import json
 
 
 class SeleniumWebAuthn(LibraryComponent):
-    def __init__(self: "SeleniumWebAuthn", ctx: SeleniumLibrary, config_file: str | None = None)-> None:
+    def __init__(self: "SeleniumWebAuthn", ctx: SeleniumLibrary, config_file: str | None = None) -> None:
         LibraryComponent.__init__(self, ctx)
         self.config = None
         self.virtauthopts = None
-
 
         if config_file:
             self.config_file = Path(config_file)
@@ -27,12 +27,14 @@ class SeleniumWebAuthn(LibraryComponent):
                 account = self.config[account_name]
                 if "autoAdd" in account and account["autoAdd"]:
                     if not self.virtauthopts:
-                        self.virtauthopts = VirtualAuthenticatorOptions(VirtualAuthenticatorOptions.Protocol.CTAP2,
-                        VirtualAuthenticatorOptions.Transport.USB,
-                        True,
-                        True,
-                        True,
-                        True)
+                        self.virtauthopts = VirtualAuthenticatorOptions(
+                            VirtualAuthenticatorOptions.Protocol.CTAP2,
+                            VirtualAuthenticatorOptions.Transport.USB,
+                            True,
+                            True,
+                            True,
+                            True,
+                        )
 
     @keyword
     def add_authenticator(self) -> None:
@@ -52,8 +54,6 @@ class SeleniumWebAuthn(LibraryComponent):
                 self.accounts = self.config.keys()
         except Exception as e:
             print(f"Unable to load config from {str(self.config_file)}: {e}", file=sys.stderr)
-
-
 
     @keyword
     def initial_webauthn_keyword(self: "SeleniumWebAuthn") -> None:

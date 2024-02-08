@@ -1,5 +1,6 @@
 wheel
 twine
+black
 python-language-server[all]
 ruff
 mypy
