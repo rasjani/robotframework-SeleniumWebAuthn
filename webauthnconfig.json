@@ -1,31 +1,11 @@
 {
-  "authenticators": [
-    {
-      "transport": "USB",
-      "protocol": "CTAP2",
-      "has_resident_key": false,
-      "has_user_verification": true,
-      "is_user_consenting": true,
-      "is_user_verified": true,
-      "autoAdd": true
-    }
-  ],
-  "credentials": {
-    "non_resident_credential": {
-        "resident": false,
-        "id": "01020304",
-        "rp_id": "localhost",
-        "private_key": "MIIFNTBfBgkqhkiG9w0BBQ0wUjAxBgkqhkiG9w0BBQwwJAQQ4SLCHwffwMx8PCIWXCo4rgICCAAwDAYIKoZIhvcNAgkFADAdBglghkgBZQMEASoEEPZ8j0H97W2k8/U6/qCXKk8EggTQWxO/QX0+Wx2pUmmU/oda/pneIMs73Qe/4faIAAwpHnLz+j04rOr6Fh5MC4raMqBmGNcVke1EDJhdHgCCISfqmyLkChc37OvnmoLsDkTIsvyXyJjNEfEAl7A2RLbFqtR3KJ8MfWAmgBtqXsmzlZjFnK8BlyyluT6y6dmeKXXnXFSe+MgpMvJ8gcL+j2xqhBkz1BO7Zn+iPwzlVZLCQN6x3mwFr4dJQTWdfM18S6jKPPJDFsu2LZAcjVPJV/+XAUg5Hz6vdCWkrmWf/QT7JwhvPYHn66DxmwSr43q6Dnd2/76CGWgIQBVpwDd8sqtduVZipm8N4FCiZP+K1+RIMX1eRuapf+KFBYjHmVwqev12Pjij4Qv95HfxsQIAMRkbQoht8XF1OkI+SHG48mVTQ5+NPfzi5iGiJXjMzV7e9R4EEwCAxITNKolArQCM+F4PGMGZrjg48GwBrVeL8M8nbHSjmPNxzGClkEPszFqHkue+/7/TE15CVgYIZVxCO2QLmB126cd9aMcAXD9Upf/u99jpg82xGmJsUjUnRP3NQIEKirhgJsZCNhsuSt55a3OSLdXV8nLMTi8N8FWE5hNLss2M6CbsHPy/wD1gdlDQpvTUWHs1TNLRMqyYWRyZ3jnwg6BlAzMtz/jiIWVPK0GJvfJO0jbwog5k18+G8edK6Cb+cvCgh5QjQ67EvWY275ty+FEOhdeyDhSYGVbZGSdDZ1aYKZtKEGlZOvtmWwRMUTFdmCwg7oS6BoUJDDAkZsYfjZrKn3o/JipI9SUU4i8C5kHRHvKdv+egwwV2TUplZHbfx/nd4eef25V0tlfuyC3CmgNurOSb2+LF2nrEGQN3RMUVDVEKI/hdWU5VmM/PBkmhyUkD2FcEI0hhMCyNhkv4CGXE7dAxZ1ujt7ly4+Thxm1qBTnFJ5GIOyo48nRhMvCXwX/9bKB/5xzr69o8JvWUMX1ypwH2fpKh6S+LVjMKPfhhEFoxA6uhQljedSwVwGICeHYwpRoNNKg6l1gtAPjYA9EnobtbW8Tj158yImlHozzQZkty9vx3Ongq/s3kyolAjppqMnuC/hgV1NXvFHkHOAwdLo7IqiBOO1OxsvM+8lcxfMrcEcn/jglVJ4mj9ZNT/JxMM3crgzM/j1vvXVbQdLm+TA1h0LfZznZgaqbYDZ2QjFfKoRRgGGEgv85XKCyhFJvnlYozk/20ztbaG5mzDKxW41WVAnZXU/43X9yh4DRtVuke1vGpHEzL8HuvkF+lqXLcbs6J+vPFs/UxhAheVW44OmSTM40DWK6n8tiVHFs351wFng5WzWRxG0ogrQwE9Orqy/QKSLBpCgrGu+iqYJhFM7+6e89SK3WUIEHecUUHNlnQt462ppzPNIKBM+f1cs5ZG1IxcZmFysmXFEhlbL5WovZLYsV/MZO2yTPif6sR3NCb+4lUqlOlOzxF4xf37sVk+eoknp1XYzWTjQNt0WJaF7Ryl0AvV5Z1HdQNwcp9tee83mVoAQ221uy7hGZ3YJjrLvjwq8OirRPtLnfJcbpkfcIqpcmh2Ihb8eHXHMjgWj6Zxu3KZaSrDHvZkSow8h4IAEdLWngQ0MM6683Exuahre63IN6C9HPZitCVISTsWT0ikPGqD10M7DplGbTz11Y=",
-        "sign_count": 0,
-        "autoAdd": true
-    }, "resident_credential": {
-        "resident": true,
-        "id": "02020202",
-        "rp_id": "localhost",
-        "user_handle": "test_user_007",
-        "private_key": "MIIFNTBfBgkqhkiG9w0BBQ0wUjAxBgkqhkiG9w0BBQwwJAQQ4SLCHwffwMx8PCIWXCo4rgICCAAwDAYIKoZIhvcNAgkFADAdBglghkgBZQMEASoEEPZ8j0H97W2k8/U6/qCXKk8EggTQWxO/QX0+Wx2pUmmU/oda/pneIMs73Qe/4faIAAwpHnLz+j04rOr6Fh5MC4raMqBmGNcVke1EDJhdHgCCISfqmyLkChc37OvnmoLsDkTIsvyXyJjNEfEAl7A2RLbFqtR3KJ8MfWAmgBtqXsmzlZjFnK8BlyyluT6y6dmeKXXnXFSe+MgpMvJ8gcL+j2xqhBkz1BO7Zn+iPwzlVZLCQN6x3mwFr4dJQTWdfM18S6jKPPJDFsu2LZAcjVPJV/+XAUg5Hz6vdCWkrmWf/QT7JwhvPYHn66DxmwSr43q6Dnd2/76CGWgIQBVpwDd8sqtduVZipm8N4FCiZP+K1+RIMX1eRuapf+KFBYjHmVwqev12Pjij4Qv95HfxsQIAMRkbQoht8XF1OkI+SHG48mVTQ5+NPfzi5iGiJXjMzV7e9R4EEwCAxITNKolArQCM+F4PGMGZrjg48GwBrVeL8M8nbHSjmPNxzGClkEPszFqHkue+/7/TE15CVgYIZVxCO2QLmB126cd9aMcAXD9Upf/u99jpg82xGmJsUjUnRP3NQIEKirhgJsZCNhsuSt55a3OSLdXV8nLMTi8N8FWE5hNLss2M6CbsHPy/wD1gdlDQpvTUWHs1TNLRMqyYWRyZ3jnwg6BlAzMtz/jiIWVPK0GJvfJO0jbwog5k18+G8edK6Cb+cvCgh5QjQ67EvWY275ty+FEOhdeyDhSYGVbZGSdDZ1aYKZtKEGlZOvtmWwRMUTFdmCwg7oS6BoUJDDAkZsYfjZrKn3o/JipI9SUU4i8C5kHRHvKdv+egwwV2TUplZHbfx/nd4eef25V0tlfuyC3CmgNurOSb2+LF2nrEGQN3RMUVDVEKI/hdWU5VmM/PBkmhyUkD2FcEI0hhMCyNhkv4CGXE7dAxZ1ujt7ly4+Thxm1qBTnFJ5GIOyo48nRhMvCXwX/9bKB/5xzr69o8JvWUMX1ypwH2fpKh6S+LVjMKPfhhEFoxA6uhQljedSwVwGICeHYwpRoNNKg6l1gtAPjYA9EnobtbW8Tj158yImlHozzQZkty9vx3Ongq/s3kyolAjppqMnuC/hgV1NXvFHkHOAwdLo7IqiBOO1OxsvM+8lcxfMrcEcn/jglVJ4mj9ZNT/JxMM3crgzM/j1vvXVbQdLm+TA1h0LfZznZgaqbYDZ2QjFfKoRRgGGEgv85XKCyhFJvnlYozk/20ztbaG5mzDKxW41WVAnZXU/43X9yh4DRtVuke1vGpHEzL8HuvkF+lqXLcbs6J+vPFs/UxhAheVW44OmSTM40DWK6n8tiVHFs351wFng5WzWRxG0ogrQwE9Orqy/QKSLBpCgrGu+iqYJhFM7+6e89SK3WUIEHecUUHNlnQt462ppzPNIKBM+f1cs5ZG1IxcZmFysmXFEhlbL5WovZLYsV/MZO2yTPif6sR3NCb+4lUqlOlOzxF4xf37sVk+eoknp1XYzWTjQNt0WJaF7Ryl0AvV5Z1HdQNwcp9tee83mVoAQ221uy7hGZ3YJjrLvjwq8OirRPtLnfJcbpkfcIqpcmh2Ihb8eHXHMjgWj6Zxu3KZaSrDHvZkSow8h4IAEdLWngQ0MM6683Exuahre63IN6C9HPZitCVISTsWT0ikPGqD10M7DplGbTz11Y=",
-        "sign_count": 0,
-        "autoAdd": false
-      }
-    }
+  "authenticator": {
+    "protocol": "ctap2",
+    "transport": "usb",
+    "hasResidentKey": true,
+    "hasUserVerification": true,
+    "isUserConsenting": true,
+    "isUserVerified": true
+  },
+  "credentials": []
 }

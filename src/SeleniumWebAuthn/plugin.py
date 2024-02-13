@@ -6,86 +6,103 @@ from selenium.webdriver.common.virtual_authenticator import VirtualAuthenticator
 
 from pathlib import Path
 from base64 import b64encode, b64decode
+from base64 import urlsafe_b64decode, urlsafe_b64encode
+from typing import Dict
 import sys
 import json
 
-
 class SeleniumWebAuthn(LibraryComponent):
+
     def __init__(self: "SeleniumWebAuthn", ctx: SeleniumLibrary, config_file: str | None = None) -> None:
         LibraryComponent.__init__(self, ctx)
         self.config = None
-        self.virtauthopts = None
+        self.config_file = None
+        self.virtual_authenticator_options = None
+        self.passive_credentials = []
 
         if config_file:
             self.config_file = Path(config_file)
-        else:
-            self.config_file = Path(".").resolve() / Path("webauthnconfig.json")
+            self.load_webauthn_configs(self.config_file)
 
-        self.load_webauthn_configs(self.config_file)
+    @keyword
+    def add_virtual_authenticator(self, protocol: str, transport: str, hasResidentKey: bool, hasUserVerification: bool, isUserConcenting: bool, isUserVerified: bool, config_file: str | None = None,
+                                  auto_save: bool = True) -> None:
 
-        if self.config and "authenticators" in self.config:
-            for authenticator in self.config["authenticators"]:
-                if "autoAdd" in authenticator and authenticator["autoAdd"]:
-                    if not self.virtauthopts:
-                        self.virtauthopts = VAOpts(
-                            getattr(VAOpts.Protocol, authenticator["protocol"]),
-                            getattr(VAOpts.Transport, authenticator["transport"]),
-                            authenticator["has_resident_key"],
-                            authenticator["has_user_verification"],
-                            authenticator["is_user_consenting"],
-                            authenticator["is_user_verified"],
-                        )
+        if self.config_file and self.virtual_authenticator_options and auto_save:
+            self.save_webauthn_configs(self.config_file)
 
-
-        if self.config and "credentials" in self.config:
-            for cred_id in self.config["credentials"]:
-                cred_data = self.config["credentials"][cred_id]
-                new_cred = None
-                if not cred_data["autoAdd"]:
-                    continue
-
-                cred_id = bytearray.fromhex(cred_data["id"])
-                rp_id = cred_data["rp_id"]
-                private_key = b64decode(cred_data["private_key"])
-                sign_count = cred_data["sign_count"]
-                if cred_data["resident"]:
-                    user_handle = b64encode(bytearray(cred_data["user_handle"], encoding="utf-8"))
-                    try:
-                        self.new_cred = Credential.create_resident_credential(cred_id, rp_id, user_handle, private_key, sign_count)
-                    except Exception as e:
-                        print(f"!!! 1: {e}", file=sys.stderr)
-                else:
-                    try:
-                        self.new_cred = Credential.create_non_resident_credential(cred_id, rp_id, private_key, sign_count)
-                    except Exception as e:
-                        print(f"!!! 2: {e}", file=sys.stderr)
-
-                if new_cred:
-                    print(f"XXX: {new_cred.to_dict()}", file=sys.stderr)
+        self.virtual_authenticator_options = VAOpts(
+            getattr(VAOpts.Protocol, protocol.upper()),
+            getattr(VAOpts.Transport, transport.upper()),
+            hasResidentKey,
+            hasUserVerification,
+            isUserConcenting,
+            isUserVerified
+        )
 
 
 
     @keyword
-    def add_authenticator(self) -> None:
-        if self.virtauthopts and self.new_cred:
-            self.ctx.driver.add_virtual_authenticator(self.virtauthopts)
-            print(f"XXX: {self.new_cred.to_dict()}", file=sys.stderr)
-            self.ctx.driver.add_credential(self.new_cred)
+    def activate_virtual_authenticator(self) -> None:
+        if self.virtual_authenticator_options:
+            self.ctx.driver.add_virtual_authenticator(self.virtual_authenticator_options)
+            if self.passive_credentials:
+                for c in self.passive_credentials:
+                    credentialId = urlsafe_b64decode(c['credentialId'])
+                    privateKey = urlsafe_b64decode(c['privateKey'])
+                    userHandle = urlsafe_b64decode(c['userHandle'])
+                    if c["isResidentCredential"]:
+                        cred = Credential.create_resident_credential( credentialId, c['rpId'], userHandle, privateKey, c['signCount'])
+                    else:
+                        cred = Credential.create_non_resident_credential( credentialId, c['rpId'], privateKey, c['signCount'])
+
+                    self.ctx.driver.add_credential(cred)
+                self.passive_credentials = []
+        else:
+            raise RuntimeError("Virtual Authenticator has not been defined.\nEither: \n * Load one from config file \n * Create one with `Add Virtual Authenticator` keyword ")
+
+
+    @property
+    def active_virtual_authentication_configs(self) -> Dict:
+        payload = {}
+        if self.virtual_authenticator_options:
+            payload['authenticator'] = self.virtual_authenticator_options.to_dict()
+
+        if self.passive_credentials:
+            payload['credentials'] = self.passive_credentials
+        else:
+            payload['credentials'] = list( map(lambda cred: cred.to_dict(), self.ctx.driver.get_credentials()))
+
+        return payload
+
+    @keyword
+    def save_webauthn_configs(self, config_file: str | None = None) -> None:
+        cfg = config_file or self.config_file
+        if not cfg:
+            raise RuntimeError("Neither argument to keyword or activate VirtualAuthenticator provided location to store configurations")
+
+
+        payload = self.active_virtual_authentication_configs
+
+        print(f"XXXX: {cfg}", file=sys.stderr)
+        Path(cfg).write_text(json.dumps(payload, indent=2))
+
 
     @keyword
     def load_webauthn_configs(self, config_file: str | None = None) -> None:
-        # Move some stuff around, as a keyword, this should *throw*
+        auto_save = False
+        load_config_from = self.config_file
+
         if config_file:
-            self.config_file = Path(config_file)
+            load_config_from = Path(config_file)
+            if self.config_file != config_file:
+                auto_save = True
 
-        print(f"Loading {self.config_file}", file=sys.stderr)
-        try:
-            self.config = json.loads(self.config_file.read_text(encoding="utf-8"))
-            if self.config:
-                self.accounts = self.config.keys()
-        except Exception as e:
-            print(f"Unable to load config from {str(self.config_file)}: {e}", file=sys.stderr)
+        payload = json.loads(load_config_from.read_text(encoding="utf-8"))
 
-    @keyword
-    def initial_webauthn_keyword(self: "SeleniumWebAuthn") -> None:
-        pass
+        if "authenticator" in payload:
+            opts = payload["authenticator"]
+            self.add_virtual_authenticator(opts["protocol"], opts["transport"], opts["hasResidentKey"], opts["hasUserVerification"], opts["isUserConsenting"], opts["isUserVerified"], load_config_from, auto_save = auto_save)
+
+        if "credentials" in payload:
+            self.passive_credentials = payload["credentials"]
